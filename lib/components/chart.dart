@@ -11,9 +11,13 @@ class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
 
   List<Map<String, Object>> get groupedTransactions {
+    final today = DateTime.now();
+    final normalizedToday = DateTime(today.year, today.month, today.day);
+    final startOfWeek = normalizedToday.subtract(Duration(days: today.weekday - 1));
+    
     return List.generate(7, (index) {
-      final weekDay = DateTime.now().subtract(
-        Duration(days: index),
+      final weekDay = startOfWeek.add(Duration(days: index)
+      
       );
 
       double totalSum = 0.0;
@@ -29,10 +33,10 @@ class Chart extends StatelessWidget {
       }
 
       return {
-        'day': DateFormat.E().format(weekDay)[0],
+        'day': DateFormat.E().format(weekDay),
         'value': totalSum,
       };
-    }).reversed.toList();
+    }).toList();
   }
 
   double get _weekTotalValue {

@@ -21,6 +21,7 @@ class _TransactionFormState extends State<TransactionForm> {
     final title = _titleController.text;
     final value = double.tryParse(_valueController.text) ?? 0.0;
 
+    // ignore: unnecessary_null_comparison
     if (title.isEmpty || value <= 0 || _selectedDate == null) {
       return;
     }
@@ -45,6 +46,9 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
+
+    final displayDate = 'Date: ${DateFormat('dd/MM/y').format(_selectedDate)}';
+
     return Card(
       elevation: 5,
       child: Padding(
@@ -72,9 +76,7 @@ class _TransactionFormState extends State<TransactionForm> {
               height: MediaQuery.of(context).size.height * 0.05,
               child: Row(
                 children: [
-                  Text(_selectedDate == null
-                      ? 'No Date Chosen!'
-                      : 'Picked Date: ${DateFormat('dd/MM/y').format(_selectedDate)}'),
+                  Text(displayDate),
                   TextButton(
                     onPressed: _showDatePicker,
                     child: const Text('Date Picker'),
