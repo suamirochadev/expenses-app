@@ -90,26 +90,21 @@ class _HomePageState extends State<HomePage> {
     final appBar = AppBar(
       actions: [
         IconButton(
+          autofocus: true,
           icon: const Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
         ),
-        FittedBox(
-          child: SizedBox(
-            height: availableHeight * 0.1,
-            child: Row(
-              children: [
-                const Icon(Icons.bar_chart_rounded),
-                Switch(
-                  value: _showChart,
-                  onChanged: (value) {
-                    setState(() {
-                      _showChart = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
+        IconButton(
+          autofocus: true,
+          padding: const EdgeInsets.only(right:  22),
+          onPressed: () {
+            setState(() {
+              _showChart = !_showChart;
+            });
+          },
+          icon: _showChart
+              ? const Icon(Icons.bar_chart_outlined)
+              : const Icon(Icons.show_chart_sharp),
         ),
       ],
       title: const Text('Expenses'),
@@ -117,18 +112,20 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (_showChart)
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (_showChart)
+                SizedBox(
+                    height: availableHeight * 0.4,
+                    child: Chart(recentTransactions: _recentTransactions)),
               SizedBox(
-                  height: availableHeight * 0.4,
-                  child: Chart(recentTransactions: _recentTransactions)),
-            SizedBox(
-                height: availableHeight * 0.5,
-                child: Transactions(
-                    transactions: _transactions, onRemove: _removeTransaction)),
-          ],
+                  height: availableHeight * 0.5,
+                  child: Transactions(
+                      transactions: _transactions, onRemove: _removeTransaction)),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
